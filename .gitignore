@@ -1,29 +1,51 @@
-### IntelliJ IDEA ###
+# IDEA
+.idea/
+*.iml
+# IDEA
+.idea/
+*.iml
+
+# Maven/Gradle
+target/
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# Logs
+*.log
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# OS
+.DS_Store
 
-### VS Code ###
+# JARs
+*.jar
+
+# VSCode
 .vscode/
 
-### Mac OS ###
+# Backup
+*.class
+
+# Resources
+datasource.txt
+
+# Maven/Gradle
+target/
+out/
+
+# Logs
+*.log
+
+# OS
 .DS_Store
+
+# JARs
+*.jar
+
+# VSCode
+.vscode/
+
+# Backup
+*.class
+
+# Resources
+datasource.txt
+
