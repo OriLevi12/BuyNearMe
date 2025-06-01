@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.om.dm.Store;
 import com.om.dm.Product;
-import com.om.dm.StoreSearchResult;
 import java.util.List;
 
 public interface IDao {

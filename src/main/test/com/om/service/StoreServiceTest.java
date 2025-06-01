@@ -4,7 +4,7 @@ import com.om.dao.DaoFileImpl;
 import com.om.dm.Product;
 import com.om.dm.Store;
 
-public class StoreTest {
+public class StoreServiceTest {
     public static void main(String[] args) {
         // Create a single service instance
         StoreService service = new StoreService(new DaoFileImpl());
@@ -129,7 +129,7 @@ public class StoreTest {
         service.addStore("CheapStuff", "Z"); // id 4
 
         // Add products to stores
-        service.addProductToStore(1, new Product(1, "screen", 29.9));  // Mouse at A (cheapest)
+        service.addProductToStore(1, new Product(1, "screen", 29.9));  // Screen at HomeStore
         service.addProductToStore(2, new Product(2, "Mouse", 59.9));  // Mouse at C
         service.addProductToStore(3, new Product(3, "Keyboard", 109.9));  // Keyboard at X
         service.addProductToStore(3, new Product(3, "Mouse", 99.9));  // Mouse at X
