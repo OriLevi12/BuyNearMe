@@ -13,6 +13,8 @@ This project implements the backend logic and service layer of a store locator s
 - See the full path and distance to the selected store
 - File-based storage via `datasource.txt`
 - Switchable algorithm at runtime
+- Client-server architecture for remote access
+- JSON-based communication
 
 ## 🧪 Demonstration
 
@@ -24,11 +26,25 @@ Run the `StoreTest.java` class for a complete set of test scenarios, including:
 
 ## 📁 Structure
 
-- `src/com/om/dm` – Data model (`Store`, `Product`, `StoreSearchResult`)
-- `src/com/om/dao` – Data access layer (`IDao`, `DaoFileImpl`)
-- `src/com/om/service` – Business logic and graph management
-- `lib/ShortestPathAlgo.jar` – External pathfinding algorithms library
-- `resources/datasource.txt` – Data storage
+```
+src/
+├── main/
+│   ├── java/
+│   │   └── com/om/
+│   │       ├── client/     # Client-side components
+│   │       ├── server/     # Server-side components
+│   │       ├── controller/ # Request handling and routing
+│   │       ├── dm/         # Data models (Store, Product, StoreSearchResult)
+│   │       ├── dao/        # Data access layer (IDao, DaoFileImpl)
+│   │       ├── service/    # Business logic and graph management
+│   │       └── Main.java   # Application entry point
+│   ├── resources/
+│   │   └── datasource.txt  # Data storage
+│   └── test/              # Test cases
+lib/
+├── ShortestPathAlgo.jar   # External pathfinding algorithms library
+└── gson-2.10.1.jar       # Google's JSON library for Java
+```
 
 ## 🔗 Dependencies
 
@@ -42,12 +58,17 @@ This project uses the [Pathfinding Library](https://github.com/OriLevi12/pathfin
 ## ⚠️ Note
 
 1. Make sure the `datasource.txt` path matches what `DaoFileImpl` is configured to use.
-2. The project requires the `ShortestPathAlgo.jar` to be present in the `lib` directory. You can build it from the [Pathfinding Library repository](https://github.com/OriLevi12/pathfinding-lib-java).
+2. The project requires the following JAR files to be present in the `lib` directory:
+   - `ShortestPathAlgo.jar` - You can build it from the [Pathfinding Library repository](https://github.com/OriLevi12/pathfinding-lib-java)
+   - `gson-2.10.1.jar` - Required for JSON serialization/deserialization
+3. Ensure all dependencies are properly added to your project's build path
 
 ## 🛠️ Setup
 
 1. Clone this repository
 2. Build the pathfinding library from [OriLevi12/pathfinding-lib-java](https://github.com/OriLevi12/pathfinding-lib-java)
 3. Copy the generated JAR to the `lib` directory
-4. Open the project in your IDE
-5. Run the tests to verify the setup
+4. Download Gson library (version 2.10.1) and add it to the `lib` directory
+5. Open the project in your IDE
+6. Add both JAR files to your project's build path
+7. Run the tests to verify the setup
