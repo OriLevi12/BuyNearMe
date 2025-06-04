@@ -95,11 +95,36 @@ public class StoreService {
         dao.addStore(store);
     }
 
+    // Product operations
     public void addProductToStore(int storeId, Product product) {
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
         }
         dao.addProductToStore(storeId, product);
+    }
+
+    public void removeProductFromStore(int storeId, String productName) {
+        if (productName == null || productName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be null or empty");
+        }
+        dao.removeProductFromStore(storeId, productName);
+    }
+
+    public List<Product> getProductsByStoreId(int storeId) {
+        if (storeId <= 0) {
+            throw new IllegalArgumentException("Store ID must be positive");
+        }
+        return dao.getProductsByStoreId(storeId);
+    }
+
+    public void updateProductInStore(int storeId, Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
+        if (product.getId() <= 0) {
+            throw new IllegalArgumentException("Product ID must be positive");
+        }
+        dao.updateProductInStore(storeId, product);
     }
 
     public Store findClosestStoreWithProduct(String userLocation, String productName) {

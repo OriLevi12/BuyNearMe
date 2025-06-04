@@ -9,35 +9,29 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server implements Runnable {
-    private final int port;
-
-    public Server(int port) {
-        this.port = port;
-    }
+    private static final int PORT = 12345;
 
     @Override
     public void run() {
-
         StoreService storeService = new StoreService(new DaoFileImpl());
         StoreController controller = new StoreController(storeService);
 
-        // 📍 Add some predefined nodes (so client can refer to them)
+        // Add simple connections between locations
         storeService.addNode("A", 0, 0);
-        storeService.addNode("B", 1, 0);
-        storeService.addNode("C", 2, 2);
+        storeService.addNode("B", 2, 0);
+        storeService.addNode("C", 4, 0);
+        storeService.addEdge("A", "B", 2);
+        storeService.addEdge("B", "C", 2);
 
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("🚀 Server is listening on port " + port);
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            System.out.println("Server started on port " + PORT);
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println(" New client connected");
-
+                System.out.println("New client connected: " + clientSocket.getInetAddress());
                 new Thread(new HandleRequest(clientSocket, controller)).start();
             }
-
         } catch (IOException e) {
-            System.out.println("Error starting server: " + e.getMessage());
             e.printStackTrace();
         }
     }

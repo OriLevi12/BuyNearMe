@@ -100,10 +100,10 @@ public class Store implements Serializable {
     }
 
     /**
-     * Removes a product from the store by its ID.
+     * Removes a product from the store by its name.
      */
-    public void removeProductById(int productId) {
-        products.removeIf(p -> p.getId() == productId);
+    public void removeProductByName(String productName) {
+        products.removeIf(p -> p.getName().equalsIgnoreCase(productName));
     }
 
     public String getLocationId() {

@@ -6,6 +6,9 @@ This project implements the backend logic and service layer of a store locator s
 
 - Add nodes and weighted edges to build a graph
 - Add stores and assign them to locations in the graph
+  - Stores are created with just name and location
+  - Coordinates are automatically set based on node location
+  - IDs are automatically generated
 - Add products to stores
 - Search for the nearest store with a specific product using:
     - Dijkstra's algorithm

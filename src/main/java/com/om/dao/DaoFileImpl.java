@@ -72,6 +72,14 @@ public class DaoFileImpl implements IDao {
         Map<Integer, Store> stores = loadStoresFromFile();
         Store store = stores.get(storeId);
         if (store != null) {
+            // Generate a unique product ID by finding the max ID across all stores
+            int maxProductId = stores.values().stream()
+                .flatMap(s -> s.getProducts().stream())
+                .mapToInt(Product::getId)
+                .max()
+                .orElse(0);
+            product.setId(maxProductId + 1);
+            
             store.addProduct(product);
             stores.put(storeId, store);
             saveStoresToFile(stores);
@@ -79,11 +87,11 @@ public class DaoFileImpl implements IDao {
     }
 
     @Override
-    public void removeProductFromStore(int storeId, int productId) {
+    public void removeProductFromStore(int storeId, String productName) {
         Map<Integer, Store> stores = loadStoresFromFile();
         Store store = stores.get(storeId);
         if (store != null) {
-            store.removeProductById(productId);
+            store.removeProductByName(productName);
             stores.put(storeId, store);
             saveStoresToFile(stores);
         }

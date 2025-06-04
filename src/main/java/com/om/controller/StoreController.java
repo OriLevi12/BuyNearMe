@@ -1,6 +1,7 @@
 package com.om.controller;
 
 import com.om.dm.Store;
+import com.om.dm.Product;
 import com.om.service.StoreService;
 
 import java.util.List;
@@ -40,5 +41,26 @@ public class StoreController {
     // Update store details
     public void update(Store store) {
         storeService.updateStore(store);
+    }
+
+    // Product operations
+    public void addProduct(int storeId, Product product) {
+        storeService.addProductToStore(storeId, product);
+    }
+
+    public void removeProduct(int storeId, String productName) {
+        storeService.removeProductFromStore(storeId, productName);
+    }
+
+    public List<Product> getProducts(int storeId) {
+        return storeService.getProductsByStoreId(storeId);
+    }
+
+    public void updateProduct(int storeId, Product product) {
+        storeService.updateProductInStore(storeId, product);
+    }
+
+    public Store findNearestStoreWithProduct(String location, String productName) {
+        return storeService.findClosestStoreWithProduct(location, productName);
     }
 }

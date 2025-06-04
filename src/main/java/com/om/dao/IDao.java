@@ -27,7 +27,7 @@ public interface IDao {
     void addProductToStore(int storeId, Product product);
 
     // Remove a product from a specific store
-    void removeProductFromStore(int storeId, int productId);
+    void removeProductFromStore(int storeId, String productName);
 
     // Get all products in a specific store
     List<Product> getProductsByStoreId(int storeId);
