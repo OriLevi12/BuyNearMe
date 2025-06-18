@@ -101,6 +101,11 @@ public class HandleRequest implements Runnable {
                     Store nearestStore = storeController.findNearestStoreWithProduct(location, productName);
                     writer.println(gson.toJson(new Response<>(true, "Nearest store found", nearestStore)));
                 }
+                case "store/findCheapest" -> {
+                    String productName = (String) body.get("productName");
+                    Store cheapestStore = storeController.findCheapestStoreWithProduct(productName);
+                    writer.println(gson.toJson(new Response<>(true, "Cheapest store found", cheapestStore)));
+                }
                 // Graph management operations
                 case "graph/addNode" -> {
                     String nodeName = (String) body.get("nodeName");

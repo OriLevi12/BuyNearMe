@@ -183,6 +183,13 @@ public class StoreService {
         return dao.findNearestStoreWithProduct(userLocation, productName, getGraph());
     }
 
+    public Store findCheapestStoreWithProduct(String productName) {
+        if (productName == null || productName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be null or empty");
+        }
+        return dao.findCheapestStoreWithProduct(productName);
+    }
+
     // Get all stores
     public List<Store> getAllStores() {
         return dao.getAllStores();

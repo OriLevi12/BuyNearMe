@@ -66,6 +66,10 @@ public class StoreController {
         return storeService.findClosestStoreWithProduct(location, productName);
     }
 
+    public Store findCheapestStoreWithProduct(String productName) {
+        return storeService.findCheapestStoreWithProduct(productName);
+    }
+
     // Graph management operations
     public void addNode(String nodeName, double x, double y) {
         storeService.addNode(nodeName, x, y);

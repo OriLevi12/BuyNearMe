@@ -189,6 +189,27 @@ public class DaoFileImpl implements IDao {
     }
 
     @Override
+    public Store findCheapestStoreWithProduct(String productName) {
+        Store cheapestStore = null;
+        double lowestPrice = Double.MAX_VALUE;
+
+        // Check all stores for the product
+        for (Store store : getAllStores()) {
+            for (Product product : store.getProducts()) {
+                if (product.getName().equalsIgnoreCase(productName)) {
+                    if (product.getPrice() < lowestPrice) {
+                        lowestPrice = product.getPrice();
+                        cheapestStore = store;
+                    }
+                    break; // Found the product in this store, no need to check other products
+                }
+            }
+        }
+        
+        return cheapestStore;
+    }
+
+    @Override
     public void clearAll() {
         saveStoresToFile(new HashMap<>());
         saveGraphToFile(new HashMap<>());

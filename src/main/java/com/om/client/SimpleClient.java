@@ -21,13 +21,14 @@ public class SimpleClient {
             System.out.println("8. Get Store Products");
             System.out.println("9. Update Product in Store");
             System.out.println("10. Find Nearest Store with Product");
-            System.out.println("11. Add Node to Graph");
-            System.out.println("12. Add Edge to Graph");
-            System.out.println("13. Remove Node from Graph");
-            System.out.println("14. Show All Nodes");
-            System.out.println("15. Remove Edge from Graph");
-            System.out.println("16. Show All Edges");
-            System.out.println("17. Clear All Data");
+            System.out.println("11. Find Cheapest Store with Product");
+            System.out.println("12. Add Node to Graph");
+            System.out.println("13. Add Edge to Graph");
+            System.out.println("14. Remove Node from Graph");
+            System.out.println("15. Show All Nodes");
+            System.out.println("16. Remove Edge from Graph");
+            System.out.println("17. Show All Edges");
+            System.out.println("18. Clear All Data");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -48,13 +49,14 @@ public class SimpleClient {
                     case 8 -> getStoreProducts();
                     case 9 -> updateProductInStore();
                     case 10 -> findNearestStoreWithProduct();
-                    case 11 -> addNode();
-                    case 12 -> addEdge();
-                    case 13 -> removeNode();
-                    case 14 -> showAllNodes();
-                    case 15 -> removeEdge();
-                    case 16 -> showAllEdges();
-                    case 17 -> clearAllData();
+                    case 11 -> findCheapestStoreWithProduct();
+                    case 12 -> addNode();
+                    case 13 -> addEdge();
+                    case 14 -> removeNode();
+                    case 15 -> showAllNodes();
+                    case 16 -> removeEdge();
+                    case 17 -> showAllEdges();
+                    case 18 -> clearAllData();
                     default -> System.out.println("Invalid option!");
                 }
             } catch (Exception e) {
@@ -211,6 +213,16 @@ public class SimpleClient {
         body.put("productName", productName);
 
         NetworkClient.sendRequest("store/findNearest", body);
+    }
+
+    private static void findCheapestStoreWithProduct() throws IOException {
+        System.out.print("Enter product name to find: ");
+        String productName = scanner.nextLine();
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("productName", productName);
+
+        NetworkClient.sendRequest("store/findCheapest", body);
     }
 
     private static void addNode() throws IOException {

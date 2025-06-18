@@ -38,6 +38,9 @@ public interface IDao {
     // Find the nearest store with path information
     Store findNearestStoreWithProduct(String userLocationId, String productName, Map<String, List<Edge>> graph);
 
+    // Find the cheapest store with product (only product price, no travel cost)
+    Store findCheapestStoreWithProduct(String productName);
+
     // Graph persistence methods
     void saveNode(String nodeName, double x, double y);
 
