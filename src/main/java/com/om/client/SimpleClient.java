@@ -1,22 +1,11 @@
 package com.om.client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.om.dm.Store;
-import com.om.dm.Product;
-import com.om.server.Request;
-import com.om.server.Response;
-
-import java.io.*;
-import java.net.Socket;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class SimpleClient {
-    private static final String HOST = "localhost";
-    private static final int PORT = 12345;
-    private static final Gson gson = new GsonBuilder().create();
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -32,6 +21,13 @@ public class SimpleClient {
             System.out.println("8. Get Store Products");
             System.out.println("9. Update Product in Store");
             System.out.println("10. Find Nearest Store with Product");
+            System.out.println("11. Add Node to Graph");
+            System.out.println("12. Add Edge to Graph");
+            System.out.println("13. Remove Node from Graph");
+            System.out.println("14. Show All Nodes");
+            System.out.println("15. Remove Edge from Graph");
+            System.out.println("16. Show All Edges");
+            System.out.println("17. Clear All Data");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -52,6 +48,13 @@ public class SimpleClient {
                     case 8 -> getStoreProducts();
                     case 9 -> updateProductInStore();
                     case 10 -> findNearestStoreWithProduct();
+                    case 11 -> addNode();
+                    case 12 -> addEdge();
+                    case 13 -> removeNode();
+                    case 14 -> showAllNodes();
+                    case 15 -> removeEdge();
+                    case 16 -> showAllEdges();
+                    case 17 -> clearAllData();
                     default -> System.out.println("Invalid option!");
                 }
             } catch (Exception e) {
@@ -61,16 +64,20 @@ public class SimpleClient {
     }
 
     private static void addStore() throws IOException {
+        // First show available nodes
+        System.out.println("\nAvailable locations:");
+        showAllNodes();
+        
         System.out.print("Enter store name: ");
         String name = scanner.nextLine();
-        System.out.print("Enter location ID (A, B, or C): ");
+        System.out.print("Enter location ID: ");
         String locationId = scanner.nextLine();
 
         Map<String, Object> body = new HashMap<>();
         body.put("name", name);
         body.put("locationId", locationId);
 
-        sendRequest("store/add", body);
+        NetworkClient.sendRequest("store/add", body);
     }
 
     private static void getStore() throws IOException {
@@ -81,11 +88,11 @@ public class SimpleClient {
         Map<String, Object> body = new HashMap<>();
         body.put("id", id);
 
-        sendRequest("store/get", body);
+        NetworkClient.sendRequest("store/get", body);
     }
 
     private static void getAllStores() throws IOException {
-        sendRequest("store/getAll", new HashMap<>());
+        NetworkClient.sendRequest("store/getAll", new HashMap<>());
     }
 
     private static void updateStore() throws IOException {
@@ -94,7 +101,11 @@ public class SimpleClient {
         scanner.nextLine(); // Consume newline
         System.out.print("Enter new store name: ");
         String name = scanner.nextLine();
-        System.out.print("Enter new location ID (A, B, or C): ");
+        
+        // Show available nodes
+        System.out.println("\nAvailable locations:");
+        showAllNodes();
+        System.out.print("Enter new location ID: ");
         String locationId = scanner.nextLine();
 
         Map<String, Object> body = new HashMap<>();
@@ -102,7 +113,7 @@ public class SimpleClient {
         body.put("name", name);
         body.put("locationId", locationId);
 
-        sendRequest("store/update", body);
+        NetworkClient.sendRequest("store/update", body);
     }
 
     private static void deleteStore() throws IOException {
@@ -113,7 +124,7 @@ public class SimpleClient {
         Map<String, Object> body = new HashMap<>();
         body.put("id", id);
 
-        sendRequest("store/delete", body);
+        NetworkClient.sendRequest("store/delete", body);
     }
 
     private static void addProductToStore() throws IOException {
@@ -134,7 +145,7 @@ public class SimpleClient {
         body.put("storeId", storeId);
         body.put("product", product);
 
-        sendRequest("store/addProduct", body);
+        NetworkClient.sendRequest("store/addProduct", body);
     }
 
     private static void removeProductFromStore() throws IOException {
@@ -148,7 +159,7 @@ public class SimpleClient {
         body.put("storeId", storeId);
         body.put("productName", productName);
 
-        sendRequest("store/removeProduct", body);
+        NetworkClient.sendRequest("store/removeProduct", body);
     }
 
     private static void getStoreProducts() throws IOException {
@@ -159,7 +170,7 @@ public class SimpleClient {
         Map<String, Object> body = new HashMap<>();
         body.put("storeId", storeId);
 
-        sendRequest("store/getProducts", body);
+        NetworkClient.sendRequest("store/getProducts", body);
     }
 
     private static void updateProductInStore() throws IOException {
@@ -184,11 +195,13 @@ public class SimpleClient {
         body.put("storeId", storeId);
         body.put("product", product);
 
-        sendRequest("store/updateProduct", body);
+        NetworkClient.sendRequest("store/updateProduct", body);
     }
 
     private static void findNearestStoreWithProduct() throws IOException {
-        System.out.print("Enter your location (A, B, or C): ");
+        System.out.println("\nAvailable locations:");
+        showAllNodes();
+        System.out.print("Enter your location: ");
         String location = scanner.nextLine();
         System.out.print("Enter product name to find: ");
         String productName = scanner.nextLine();
@@ -197,51 +210,75 @@ public class SimpleClient {
         body.put("location", location);
         body.put("productName", productName);
 
-        sendRequest("store/findNearest", body);
+        NetworkClient.sendRequest("store/findNearest", body);
     }
 
-    private static void sendRequest(String action, Map<String, Object> body) throws IOException {
-        try (Socket socket = new Socket(HOST, PORT);
-             PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+    private static void addNode() throws IOException {
+        System.out.print("Enter node name: ");
+        String nodeName = scanner.nextLine();
+        System.out.print("Enter X coordinate: ");
+        double x = scanner.nextDouble();
+        System.out.print("Enter Y coordinate: ");
+        double y = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline
 
-            // Prepare headers
-            Map<String, String> headers = new HashMap<>();
-            headers.put("action", action);
+        Map<String, Object> body = new HashMap<>();
+        body.put("nodeName", nodeName);
+        body.put("x", x);
+        body.put("y", y);
 
-            // Create request object
-            Request<Map<String, Object>> request = new Request<>(headers, body);
+        NetworkClient.sendRequest("graph/addNode", body);
+    }
 
-            // Convert to JSON and send
-            String jsonRequest = gson.toJson(request);
-            writer.println(jsonRequest);
-            writer.println(); // Empty line to signal end of message
+    private static void addEdge() throws IOException {
+        System.out.print("Enter source node: ");
+        String from = scanner.nextLine();
+        System.out.print("Enter target node: ");
+        String to = scanner.nextLine();
+        System.out.print("Enter edge weight: ");
+        double weight = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline
 
-            // Read response
-            String responseLine;
-            StringBuilder responseBuilder = new StringBuilder();
-            while ((responseLine = reader.readLine()) != null) {
-                responseBuilder.append(responseLine);
-            }
+        Map<String, Object> body = new HashMap<>();
+        body.put("from", from);
+        body.put("to", to);
+        body.put("weight", weight);
 
-            System.out.println("\n📨 Server Response:");
-            String responseJson = responseBuilder.toString();
-            System.out.println(responseJson);
+        NetworkClient.sendRequest("graph/addEdge", body);
+    }
 
-            // Pretty print nearest store details if action is 'store/findNearest'
-            if (action.equals("store/findNearest")) {
-                try {
-                    Response<Store> response = gson.fromJson(responseJson, new com.google.gson.reflect.TypeToken<Response<Store>>(){}.getType());
-                    if (response.isSuccess() && response.getBody() != null) {
-                        System.out.println("\n--- Nearest Store Details ---");
-                        System.out.println(response.getBody().toString());
-                    } else {
-                        System.out.println("No store found or error: " + response.getMessage());
-                    }
-                } catch (Exception e) {
-                    System.out.println("(Could not parse nearest store details)");
-                }
-            }
-        }
+    private static void removeNode() throws IOException {
+        System.out.print("Enter node name to remove: ");
+        String nodeName = scanner.nextLine();
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("nodeName", nodeName);
+
+        NetworkClient.sendRequest("graph/removeNode", body);
+    }
+
+    private static void showAllNodes() throws IOException {
+        NetworkClient.sendRequest("graph/getNodes", new HashMap<>());
+    }
+
+    private static void removeEdge() throws IOException {
+        System.out.print("Enter source node: ");
+        String from = scanner.nextLine();
+        System.out.print("Enter target node: ");
+        String to = scanner.nextLine();
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("from", from);
+        body.put("to", to);
+
+        NetworkClient.sendRequest("graph/removeEdge", body);
+    }
+
+    private static void showAllEdges() throws IOException {
+        NetworkClient.sendRequest("graph/getEdges", new HashMap<>());
+    }
+
+    private static void clearAllData() throws IOException {
+        NetworkClient.sendRequest("graph/clearAllData", new HashMap<>());
     }
 }

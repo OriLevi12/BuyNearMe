@@ -15,14 +15,6 @@ public class Server implements Runnable {
     public void run() {
         StoreService storeService = new StoreService(new DaoFileImpl());
         StoreController controller = new StoreController(storeService);
-
-        // Add simple connections between locations
-        storeService.addNode("A", 0, 0);
-        storeService.addNode("B", 2, 0);
-        storeService.addNode("C", 4, 0);
-        storeService.addEdge("A", "B", 2);
-        storeService.addEdge("B", "C", 2);
-
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server started on port " + PORT);
 

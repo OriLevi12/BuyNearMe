@@ -191,6 +191,7 @@ public class DaoFileImpl implements IDao {
     @Override
     public void clearAll() {
         saveStoresToFile(new HashMap<>());
+        saveGraphToFile(new HashMap<>());
     }
 
     @SuppressWarnings("unchecked")
@@ -210,4 +211,147 @@ public class DaoFileImpl implements IDao {
         }
     }
 
+    // Graph persistence methods
+    private static final String GRAPH_FILE_NAME = "src/main/resources/graph.dat";
+
+    @Override
+    public void saveNode(String nodeName, double x, double y) {
+        Map<String, Object> graphData = loadGraphFromFile();
+        @SuppressWarnings("unchecked")
+        Map<String, double[]> nodes = (Map<String, double[]>) graphData.getOrDefault("nodes", new HashMap<>());
+        nodes.put(nodeName, new double[]{x, y});
+        graphData.put("nodes", nodes);
+        saveGraphToFile(graphData);
+    }
+
+    @Override
+    public void removeNode(String nodeName) {
+        Map<String, Object> graphData = loadGraphFromFile();
+        @SuppressWarnings("unchecked")
+        Map<String, double[]> nodes = (Map<String, double[]>) graphData.getOrDefault("nodes", new HashMap<>());
+        nodes.remove(nodeName);
+        graphData.put("nodes", nodes);
+        
+        // Also remove all edges connected to this node
+        @SuppressWarnings("unchecked")
+        Map<String, List<Map<String, Object>>> edges = (Map<String, List<Map<String, Object>>>) graphData.getOrDefault("edges", new HashMap<>());
+        edges.remove(nodeName);
+        edges.values().forEach(edgeList -> edgeList.removeIf(edgeData -> 
+            edgeData.get("from").equals(nodeName) || edgeData.get("to").equals(nodeName)));
+        graphData.put("edges", edges);
+        
+        saveGraphToFile(graphData);
+    }
+
+    @Override
+    public void saveEdge(String from, String to, double weight) {
+        Map<String, Object> graphData = loadGraphFromFile();
+        @SuppressWarnings("unchecked")
+        Map<String, List<Map<String, Object>>> edges = (Map<String, List<Map<String, Object>>>) graphData.getOrDefault("edges", new HashMap<>());
+        
+        edges.putIfAbsent(from, new ArrayList<>());
+        edges.putIfAbsent(to, new ArrayList<>());
+        
+        // Create simple edge data structure
+        Map<String, Object> edgeData = new HashMap<>();
+        edgeData.put("from", from);
+        edgeData.put("to", to);
+        edgeData.put("weight", weight);
+        
+        // Add edge from->to
+        edges.get(from).add(edgeData);
+        
+        // Create reverse edge data structure
+        Map<String, Object> reverseEdgeData = new HashMap<>();
+        reverseEdgeData.put("from", to);
+        reverseEdgeData.put("to", from);
+        reverseEdgeData.put("weight", weight);
+        
+        // Add edge to->from (undirected graph)
+        edges.get(to).add(reverseEdgeData);
+        
+        graphData.put("edges", edges);
+        saveGraphToFile(graphData);
+    }
+
+    @Override
+    public void removeEdge(String from, String to) {
+        Map<String, Object> graphData = loadGraphFromFile();
+        @SuppressWarnings("unchecked")
+        Map<String, List<Map<String, Object>>> edges = (Map<String, List<Map<String, Object>>>) graphData.getOrDefault("edges", new HashMap<>());
+        
+        if (edges.containsKey(from)) {
+            edges.get(from).removeIf(edgeData -> 
+                edgeData.get("to").equals(to));
+        }
+        if (edges.containsKey(to)) {
+            edges.get(to).removeIf(edgeData -> 
+                edgeData.get("to").equals(from));
+        }
+        
+        graphData.put("edges", edges);
+        saveGraphToFile(graphData);
+    }
+
+    @Override
+    public List<String> getAllNodes() {
+        Map<String, Object> graphData = loadGraphFromFile();
+        @SuppressWarnings("unchecked")
+        Map<String, double[]> nodes = (Map<String, double[]>) graphData.getOrDefault("nodes", new HashMap<>());
+        return new ArrayList<>(nodes.keySet());
+    }
+
+    @Override
+    public Map<String, double[]> getAllNodesWithCoordinates() {
+        Map<String, Object> graphData = loadGraphFromFile();
+        @SuppressWarnings("unchecked")
+        Map<String, double[]> nodes = (Map<String, double[]>) graphData.getOrDefault("nodes", new HashMap<>());
+        System.out.println("DAO: Found " + nodes.size() + " nodes in file");
+        return new HashMap<>(nodes);
+    }
+
+    @Override
+    public Map<String, List<Edge>> getAllEdges() {
+        Map<String, Object> graphData = loadGraphFromFile();
+        @SuppressWarnings("unchecked")
+        Map<String, List<Map<String, Object>>> edges = (Map<String, List<Map<String, Object>>>) graphData.getOrDefault("edges", new HashMap<>());
+        
+        System.out.println("DAO: Found " + edges.size() + " edge entries in file");
+        
+        // Convert back to Edge objects
+        Map<String, List<Edge>> result = new HashMap<>();
+        for (Map.Entry<String, List<Map<String, Object>>> entry : edges.entrySet()) {
+            String nodeName = entry.getKey();
+            List<Edge> edgeList = new ArrayList<>();
+            
+            for (Map<String, Object> edgeData : entry.getValue()) {
+                String from = (String) edgeData.get("from");
+                String to = (String) edgeData.get("to");
+                double weight = ((Number) edgeData.get("weight")).doubleValue();
+                edgeList.add(new Edge(from, to, weight));
+            }
+            
+            result.put(nodeName, edgeList);
+            System.out.println("DAO: Node " + nodeName + " has " + edgeList.size() + " edges");
+        }
+        
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> loadGraphFromFile() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(GRAPH_FILE_NAME))) {
+            return (Map<String, Object>) ois.readObject();
+        } catch (Exception e) {
+            return new HashMap<>();
+        }
+    }
+
+    private void saveGraphToFile(Map<String, Object> graphData) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(GRAPH_FILE_NAME))) {
+            oos.writeObject(graphData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

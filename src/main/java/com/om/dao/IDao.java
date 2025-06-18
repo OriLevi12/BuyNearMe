@@ -38,6 +38,21 @@ public interface IDao {
     // Find the nearest store with path information
     Store findNearestStoreWithProduct(String userLocationId, String productName, Map<String, List<Edge>> graph);
 
+    // Graph persistence methods
+    void saveNode(String nodeName, double x, double y);
+
+    void removeNode(String nodeName);
+
+    void saveEdge(String from, String to, double weight);
+
+    void removeEdge(String from, String to);
+
+    List<String> getAllNodes();
+    
+    Map<String, double[]> getAllNodesWithCoordinates();
+
+    Map<String, List<Edge>> getAllEdges();
+
     // Clear all data
     void clearAll();
 }

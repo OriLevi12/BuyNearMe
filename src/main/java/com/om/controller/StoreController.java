@@ -3,8 +3,10 @@ package com.om.controller;
 import com.om.dm.Store;
 import com.om.dm.Product;
 import com.om.service.StoreService;
+import com.om.algorithm.Edge;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Handles client requests related to store operations,
@@ -62,5 +64,34 @@ public class StoreController {
 
     public Store findNearestStoreWithProduct(String location, String productName) {
         return storeService.findClosestStoreWithProduct(location, productName);
+    }
+
+    // Graph management operations
+    public void addNode(String nodeName, double x, double y) {
+        storeService.addNode(nodeName, x, y);
+    }
+
+    public void addEdge(String from, String to, double weight) {
+        storeService.addEdge(from, to, weight);
+    }
+
+    public void removeNode(String nodeName) {
+        storeService.removeNode(nodeName);
+    }
+
+    public List<String> getAllNodes() {
+        return storeService.getAllNodes();
+    }
+
+    public void removeEdge(String from, String to) {
+        storeService.removeEdge(from, to);
+    }
+
+    public Map<String, List<Edge>> getAllEdges() {
+        return storeService.getGraph();
+    }
+
+    public void clearAll() {
+        storeService.clear();
     }
 }

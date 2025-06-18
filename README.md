@@ -30,23 +30,41 @@ Run the `StoreTest.java` class for a complete set of test scenarios, including:
 ## 📁 Structure
 
 ```
-src/
-├── main/
-│   ├── java/
-│   │   └── com/om/
-│   │       ├── client/     # Client-side components
-│   │       ├── server/     # Server-side components
-│   │       ├── controller/ # Request handling and routing
-│   │       ├── dm/         # Data models (Store, Product, StoreSearchResult)
-│   │       ├── dao/        # Data access layer (IDao, DaoFileImpl)
-│   │       ├── service/    # Business logic and graph management
-│   │       └── Main.java   # Application entry point
-│   ├── resources/
-│   │   └── datasource.txt  # Data storage
-│   └── test/              # Test cases
-lib/
-├── ShortestPathAlgo.jar   # External pathfinding algorithms library
-└── gson-2.10.1.jar       # Google's JSON library for Java
+BuyNearMe/
+├── lib/                           # External dependencies
+│   ├── gson-2.10.1.jar           # Google's JSON library
+│   └── ShortestPathAlgo.jar      # Pathfinding algorithms library
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── com/om/
+│       │       ├── client/        # Client-side components
+│       │       │   ├── SimpleClient.java    # User interface and input handling
+│       │       │   └── NetworkClient.java   # Network communication layer
+│       │       ├── server/        # Server-side components
+│       │       │   ├── HandleRequest.java   # Request processing
+│       │       │   ├── Server.java          # Main server class
+│       │       │   ├── Request.java         # Request data model
+│       │       │   └── Response.java        # Response data model
+│       │       ├── controller/    # Request handling and routing
+│       │       │   └── StoreController.java # Business logic controller
+│       │       ├── dm/            # Data models
+│       │       │   ├── Store.java           # Store entity
+│       │       │   └── Product.java         # Product entity
+│       │       ├── dao/           # Data access layer
+│       │       │   ├── IDao.java            # Data access interface
+│       │       │   └── DaoFileImpl.java     # File-based DAO implementation
+│       │       ├── service/       # Business logic and graph management
+│       │       │   └── StoreService.java    # Core business logic service
+│       │       └── Main.java      # Application entry point
+│       ├── resources/             # Application resources
+│       │   ├── datasource.txt     # Store and product data storage
+│       │   └── graph.dat          # Graph nodes and edges data storage
+│       └── test/                  # Test cases
+│           └── com/om/service/
+│               └── StoreServiceTest.java    # Service layer tests
+├── pom.xml                        # Maven project configuration
+└── README.md                      # Project documentation
 ```
 
 ## 🔗 Dependencies
