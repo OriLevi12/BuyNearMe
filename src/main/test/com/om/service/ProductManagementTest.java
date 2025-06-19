@@ -11,17 +11,37 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test suite for product management operations within stores.
+ * Tests the product-related functionality of the StoreService class.
+ * 
+ * Test Coverage:
+ * - Product addition to stores
+ * - Product removal from stores
+ * - Product updates and modifications
+ * - Product retrieval by store ID
+ * - Error handling for invalid product operations
+ * - Validation of product data integrity
+ */
 @DisplayName("Product Management Tests")
 public class ProductManagementTest {
 
     private StoreService storeService;
 
+    /**
+     * Set up a fresh StoreService instance with test data before each test.
+     * Creates a test graph and initializes the service for product operations.
+     */
     @BeforeEach
     void setUp() {
         TestDao testDao = new TestDao();
         storeService = new StoreService(testDao);
     }
 
+    /**
+     * Test successful product addition to a store.
+     * Verifies that products are properly added with correct data and auto-generated ID.
+     */
     @Test
     @DisplayName("Should add product to store successfully")
     void testAddProductToStore() {
@@ -32,6 +52,10 @@ public class ProductManagementTest {
         assertEquals("Test Product", products.get(0).getName());
     }
 
+    /**
+     * Test validation: cannot add null product to store.
+     * Ensures proper error handling when product is null.
+     */
     @Test
     @DisplayName("Should throw exception when adding null product")
     void testAddNullProductToStore() {
@@ -40,6 +64,10 @@ public class ProductManagementTest {
         });
     }
 
+    /**
+     * Test successful product removal from a store by name.
+     * Verifies that products are properly removed from the store.
+     */
     @Test
     @DisplayName("Should remove product from store successfully")
     void testRemoveProductFromStore() {
@@ -52,6 +80,10 @@ public class ProductManagementTest {
         assertTrue(products.isEmpty());
     }
 
+    /**
+     * Test validation: cannot remove product with null name.
+     * Ensures proper error handling when product name is null.
+     */
     @Test
     @DisplayName("Should throw exception when removing product with null name")
     void testRemoveProductWithNullName() {
@@ -60,6 +92,10 @@ public class ProductManagementTest {
         });
     }
 
+    /**
+     * Test validation: cannot remove product with empty name.
+     * Ensures proper error handling when product name is empty.
+     */
     @Test
     @DisplayName("Should throw exception when removing product with empty name")
     void testRemoveProductWithEmptyName() {
@@ -68,6 +104,10 @@ public class ProductManagementTest {
         });
     }
 
+    /**
+     * Test successful product retrieval by store ID.
+     * Verifies that all products in a store can be retrieved correctly.
+     */
     @Test
     @DisplayName("Should get products by store ID")
     void testGetProductsByStoreId() {
@@ -82,6 +122,10 @@ public class ProductManagementTest {
         assertEquals(2, products.size());
     }
 
+    /**
+     * Test validation: cannot get products with invalid store ID.
+     * Ensures proper error handling for invalid store IDs.
+     */
     @Test
     @DisplayName("Should throw exception when getting products with invalid store ID")
     void testGetProductsByStoreIdWithInvalidId() {
@@ -90,6 +134,10 @@ public class ProductManagementTest {
         });
     }
 
+    /**
+     * Test successful product update in a store.
+     * Verifies that product information can be modified and persisted.
+     */
     @Test
     @DisplayName("Should update product in store successfully")
     void testUpdateProductInStore() {
@@ -104,6 +152,10 @@ public class ProductManagementTest {
         assertEquals(15.0, products.get(0).getPrice());
     }
 
+    /**
+     * Test validation: cannot update null product.
+     * Ensures proper error handling when updating with null product.
+     */
     @Test
     @DisplayName("Should throw exception when updating null product")
     void testUpdateNullProductInStore() {
@@ -112,6 +164,10 @@ public class ProductManagementTest {
         });
     }
 
+    /**
+     * Test validation: cannot update product with invalid ID.
+     * Ensures proper error handling when product ID is invalid.
+     */
     @Test
     @DisplayName("Should throw exception when updating product with invalid ID")
     void testUpdateProductWithInvalidId() {
@@ -122,6 +178,15 @@ public class ProductManagementTest {
         });
     }
 
+    /**
+     * Test DAO implementation for this test class.
+     * Provides a mock data access layer with predefined test data and product management.
+     * 
+     * Features:
+     * - Product storage and retrieval
+     * - Store management for product operations
+     * - Graph data for store location validation
+     */
     // TestDao implementation for this test class
     private static class TestDao implements com.om.dao.IDao {
         private java.util.Map<String, double[]> nodes = new java.util.HashMap<>();

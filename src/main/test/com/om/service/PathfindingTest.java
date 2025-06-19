@@ -11,12 +11,29 @@ import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test suite for pathfinding operations and algorithm functionality.
+ * Tests the pathfinding capabilities of the StoreService class including
+ * nearest store finding, cheapest store finding, and algorithm switching.
+ * 
+ * Test Coverage:
+ * - Nearest store finding with path information
+ * - Cheapest store finding based on product price
+ * - Algorithm switching (Dijkstra vs A*)
+ * - Algorithm comparison and performance
+ * - Error handling for pathfinding operations
+ * - Integration with graph and store data
+ */
 @DisplayName("Pathfinding Tests")
 public class PathfindingTest {
 
     private StoreService storeService;
     private StoreService storeServiceWithAStar;
 
+    /**
+     * Set up fresh StoreService instances with test data before each test.
+     * Creates test graphs and initializes services for pathfinding operations.
+     */
     @BeforeEach
     void setUp() {
         TestDao testDao = new TestDao();
@@ -24,6 +41,10 @@ public class PathfindingTest {
         storeServiceWithAStar = new StoreService(testDao, new AStarAlgoShortestPathImpl());
     }
 
+    /**
+     * Test finding the nearest store with a specific product.
+     * Verifies that the pathfinding algorithm correctly identifies the closest store.
+     */
     @Test
     @DisplayName("Should find closest store with product")
     void testFindClosestStoreWithProduct() {
@@ -37,6 +58,10 @@ public class PathfindingTest {
         assertEquals("Test Store", closestStore.getName());
     }
 
+    /**
+     * Test validation: cannot find closest store with null product name.
+     * Ensures proper error handling when product name is null.
+     */
     @Test
     @DisplayName("Should throw exception when finding closest store with null product name")
     void testFindClosestStoreWithNullProductName() {
@@ -45,6 +70,10 @@ public class PathfindingTest {
         });
     }
 
+    /**
+     * Test validation: cannot find closest store with empty product name.
+     * Ensures proper error handling when product name is empty.
+     */
     @Test
     @DisplayName("Should throw exception when finding closest store with empty product name")
     void testFindClosestStoreWithEmptyProductName() {
@@ -53,6 +82,10 @@ public class PathfindingTest {
         });
     }
 
+    /**
+     * Test validation: cannot find closest store from non-existent location.
+     * Ensures proper error handling when starting location doesn't exist.
+     */
     @Test
     @DisplayName("Should throw exception when finding closest store from non-existent location")
     void testFindClosestStoreFromNonExistentLocation() {
@@ -61,6 +94,10 @@ public class PathfindingTest {
         });
     }
 
+    /**
+     * Test finding the cheapest store with a specific product.
+     * Verifies that the algorithm correctly identifies the store with the lowest price.
+     */
     @Test
     @DisplayName("Should find cheapest store with product")
     void testFindCheapestStoreWithProduct() {
@@ -74,6 +111,10 @@ public class PathfindingTest {
         assertEquals("Cheap Store", cheapestStore.getName());
     }
 
+    /**
+     * Test validation: cannot find cheapest store with null product name.
+     * Ensures proper error handling when product name is null.
+     */
     @Test
     @DisplayName("Should throw exception when finding cheapest store with null product name")
     void testFindCheapestStoreWithNullProductName() {
@@ -82,6 +123,10 @@ public class PathfindingTest {
         });
     }
 
+    /**
+     * Test validation: cannot find cheapest store with empty product name.
+     * Ensures proper error handling when product name is empty.
+     */
     @Test
     @DisplayName("Should throw exception when finding cheapest store with empty product name")
     void testFindCheapestStoreWithEmptyProductName() {
@@ -90,18 +135,30 @@ public class PathfindingTest {
         });
     }
 
+    /**
+     * Test switching to A* algorithm for pathfinding.
+     * Verifies that the algorithm can be changed at runtime.
+     */
     @Test
     @DisplayName("Should switch to A* algorithm")
     void testUseAStarAlgorithm() {
         assertDoesNotThrow(() -> storeService.useAStarAlgorithm());
     }
 
+    /**
+     * Test switching to Dijkstra algorithm for pathfinding.
+     * Verifies that the algorithm can be changed at runtime.
+     */
     @Test
     @DisplayName("Should switch to Dijkstra algorithm")
     void testUseDijkstraAlgorithm() {
         assertDoesNotThrow(() -> storeService.useDijkstraAlgorithm());
     }
 
+    /**
+     * Test comparison between Dijkstra and A* algorithms.
+     * Verifies that both algorithms produce valid results.
+     */
     @Test
     @DisplayName("Should compare Dijkstra vs A* algorithms")
     void testAlgorithmComparison() {
@@ -117,6 +174,10 @@ public class PathfindingTest {
         assertEquals(dijkstraResult.getName(), aStarResult.getName());
     }
 
+    /**
+     * Test complete workflow: add node, store, product, and find store.
+     * Verifies end-to-end functionality from data creation to pathfinding.
+     */
     @Test
     @DisplayName("Should handle complete workflow: add node, store, product, and find store")
     void testCompleteWorkflow() {
@@ -131,6 +192,16 @@ public class PathfindingTest {
         assertEquals("Integration Store", foundStore.getName());
     }
 
+    /**
+     * Test DAO implementation for this test class.
+     * Provides a mock data access layer with predefined test data and pathfinding support.
+     * 
+     * Features:
+     * - Graph data for pathfinding algorithms
+     * - Store and product storage
+     * - Pathfinding algorithm integration
+     * - Distance and path calculation
+     */
     // TestDao implementation for this test class
     private static class TestDao implements com.om.dao.IDao {
         private java.util.Map<String, double[]> nodes = new java.util.HashMap<>();

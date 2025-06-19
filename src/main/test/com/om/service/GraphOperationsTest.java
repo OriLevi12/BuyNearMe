@@ -10,17 +10,35 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test suite for graph operations including node and edge management.
+ * Tests the core graph functionality of the StoreService class.
+ * 
+ * Test Coverage:
+ * - Node operations (add, remove, validation)
+ * - Edge operations (add, remove, validation) 
+ * - Graph structure retrieval
+ * - Error handling for invalid operations
+ */
 @DisplayName("Graph Operations Tests")
 public class GraphOperationsTest {
 
     private StoreService storeService;
 
+    /**
+     * Set up a fresh StoreService instance with test data before each test.
+     * Creates a test graph with 4 nodes (A, B, C, D) and their connecting edges.
+     */
     @BeforeEach
     void setUp() {
         TestDao testDao = new TestDao();
         storeService = new StoreService(testDao);
     }
 
+    /**
+     * Test successful node addition to the graph.
+     * Verifies that a new node is properly added and can be retrieved.
+     */
     @Test
     @DisplayName("Should add node successfully")
     void testAddNode() {
@@ -28,6 +46,10 @@ public class GraphOperationsTest {
         assertTrue(storeService.getAllNodes().contains("E"));
     }
 
+    /**
+     * Test validation: node name cannot be null.
+     * Ensures proper error handling for invalid input.
+     */
     @Test
     @DisplayName("Should throw exception when adding node with null name")
     void testAddNodeWithNullName() {
@@ -36,6 +58,10 @@ public class GraphOperationsTest {
         });
     }
 
+    /**
+     * Test validation: node name cannot be empty.
+     * Ensures proper error handling for invalid input.
+     */
     @Test
     @DisplayName("Should throw exception when adding node with empty name")
     void testAddNodeWithEmptyName() {
@@ -44,6 +70,10 @@ public class GraphOperationsTest {
         });
     }
 
+    /**
+     * Test successful edge addition between existing nodes.
+     * Verifies that edges are properly added to the graph structure.
+     */
     @Test
     @DisplayName("Should add edge successfully")
     void testAddEdge() {
@@ -52,6 +82,10 @@ public class GraphOperationsTest {
         assertTrue(graph.containsKey("A"));
     }
 
+    /**
+     * Test validation: edge weight cannot be negative.
+     * Ensures proper error handling for invalid edge weights.
+     */
     @Test
     @DisplayName("Should throw exception when adding edge with negative weight")
     void testAddEdgeWithNegativeWeight() {
@@ -60,6 +94,10 @@ public class GraphOperationsTest {
         });
     }
 
+    /**
+     * Test validation: cannot add edge between non-existent nodes.
+     * Ensures proper error handling when nodes don't exist.
+     */
     @Test
     @DisplayName("Should throw exception when adding edge between non-existent nodes")
     void testAddEdgeWithNonExistentNodes() {
@@ -68,6 +106,10 @@ public class GraphOperationsTest {
         });
     }
 
+    /**
+     * Test successful node removal from the graph.
+     * Verifies that a node and all its connected edges are properly removed.
+     */
     @Test
     @DisplayName("Should remove node successfully")
     void testRemoveNode() {
@@ -75,6 +117,10 @@ public class GraphOperationsTest {
         assertFalse(storeService.getAllNodes().contains("A"));
     }
 
+    /**
+     * Test validation: cannot remove non-existent node.
+     * Ensures proper error handling when trying to remove invalid nodes.
+     */
     @Test
     @DisplayName("Should throw exception when removing non-existent node")
     void testRemoveNonExistentNode() {
@@ -83,12 +129,20 @@ public class GraphOperationsTest {
         });
     }
 
+    /**
+     * Test successful edge removal between nodes.
+     * Verifies that edges are properly removed from the graph.
+     */
     @Test
     @DisplayName("Should remove edge successfully")
     void testRemoveEdge() {
         assertDoesNotThrow(() -> storeService.removeEdge("A", "B"));
     }
 
+    /**
+     * Test validation: cannot remove edge between non-existent nodes.
+     * Ensures proper error handling when nodes don't exist.
+     */
     @Test
     @DisplayName("Should throw exception when removing edge between non-existent nodes")
     void testRemoveEdgeWithNonExistentNodes() {
@@ -97,6 +151,10 @@ public class GraphOperationsTest {
         });
     }
 
+    /**
+     * Test retrieval of all nodes in the graph.
+     * Verifies that the graph contains the expected test nodes.
+     */
     @Test
     @DisplayName("Should get all nodes")
     void testGetAllNodes() {
@@ -106,6 +164,10 @@ public class GraphOperationsTest {
         assertTrue(nodes.containsAll(List.of("A", "B", "C", "D")));
     }
 
+    /**
+     * Test retrieval of the complete graph structure.
+     * Verifies that the graph contains the expected nodes and structure.
+     */
     @Test
     @DisplayName("Should get graph structure")
     void testGetGraph() {
@@ -117,6 +179,14 @@ public class GraphOperationsTest {
         assertTrue(graph.containsKey("D"));
     }
 
+    /**
+     * Test DAO implementation for this test class.
+     * Provides a mock data access layer with predefined test data.
+     * 
+     * Test Graph Structure:
+     * - Nodes: A(0,0), B(1,1), C(2,0), D(1,-1)
+     * - Edges: A-B(1.5), A-D(2.0), B-C(1.0), C-D(1.5) (undirected)
+     */
     // TestDao implementation for this test class
     private static class TestDao implements com.om.dao.IDao {
         private java.util.Map<String, double[]> nodes = new java.util.HashMap<>();

@@ -10,17 +10,37 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test suite for store management operations including CRUD operations.
+ * Tests the store-related functionality of the StoreService class.
+ * 
+ * Test Coverage:
+ * - Store creation and validation
+ * - Store retrieval (by ID, all stores)
+ * - Store updates and modifications
+ * - Store deletion and cleanup
+ * - Error handling for invalid store operations
+ * - Location validation against graph nodes
+ */
 @DisplayName("Store Management Tests")
 public class StoreManagementTest {
 
     private StoreService storeService;
 
+    /**
+     * Set up a fresh StoreService instance with test data before each test.
+     * Creates a test graph and initializes the service for store operations.
+     */
     @BeforeEach
     void setUp() {
         TestDao testDao = new TestDao();
         storeService = new StoreService(testDao);
     }
 
+    /**
+     * Test successful store creation with valid data.
+     * Verifies that a store is properly added with auto-generated ID and coordinates.
+     */
     @Test
     @DisplayName("Should add store successfully")
     void testAddStore() {
@@ -29,6 +49,10 @@ public class StoreManagementTest {
         assertFalse(stores.isEmpty());
     }
 
+    /**
+     * Test validation: cannot add store to non-existent location.
+     * Ensures proper error handling when store location doesn't exist in the graph.
+     */
     @Test
     @DisplayName("Should throw exception when adding store to non-existent location")
     void testAddStoreToNonExistentLocation() {
@@ -37,6 +61,10 @@ public class StoreManagementTest {
         });
     }
 
+    /**
+     * Test retrieval of all stores in the system.
+     * Verifies that the service can return the complete list of stores.
+     */
     @Test
     @DisplayName("Should get all stores")
     void testGetAllStores() {
@@ -49,6 +77,10 @@ public class StoreManagementTest {
         assertEquals(2, stores.size());
     }
 
+    /**
+     * Test successful store retrieval by ID.
+     * Verifies that stores can be found using their unique identifier.
+     */
     @Test
     @DisplayName("Should get store by ID")
     void testGetStoreById() {
@@ -60,6 +92,10 @@ public class StoreManagementTest {
         assertEquals("Test Store", store.getName());
     }
 
+    /**
+     * Test validation: cannot get store with invalid (negative) ID.
+     * Ensures proper error handling for invalid store IDs.
+     */
     @Test
     @DisplayName("Should throw exception when getting store with invalid ID")
     void testGetStoreByIdWithInvalidId() {
@@ -68,6 +104,10 @@ public class StoreManagementTest {
         });
     }
 
+    /**
+     * Test successful store update with valid data.
+     * Verifies that store information can be modified and persisted.
+     */
     @Test
     @DisplayName("Should update store successfully")
     void testUpdateStore() {
@@ -80,6 +120,10 @@ public class StoreManagementTest {
         assertEquals("Updated Store", updatedStore.getName());
     }
 
+    /**
+     * Test successful store deletion by ID.
+     * Verifies that stores are properly removed from the system.
+     */
     @Test
     @DisplayName("Should delete store successfully")
     void testDeleteStore() {
@@ -91,6 +135,10 @@ public class StoreManagementTest {
         assertTrue(stores.isEmpty());
     }
 
+    /**
+     * Test validation: deleting store with invalid ID should throw exception.
+     * Ensures proper error handling for invalid store IDs.
+     */
     @Test
     @DisplayName("Should throw exception when deleting store with invalid ID")
     void testDeleteStoreWithInvalidId() {
@@ -99,6 +147,15 @@ public class StoreManagementTest {
         });
     }
 
+    /**
+     * Test DAO implementation for this test class.
+     * Provides a mock data access layer with predefined test data and store management.
+     * 
+     * Features:
+     * - Auto-incrementing store IDs
+     * - Graph data for location validation
+     * - Store and product storage
+     */
     // TestDao implementation for this test class
     private static class TestDao implements com.om.dao.IDao {
         private java.util.Map<String, double[]> nodes = new java.util.HashMap<>();
