@@ -34,18 +34,12 @@ public class StoreService {
         Map<String, double[]> nodesWithCoords = dao.getAllNodesWithCoordinates();
         Map<String, List<Edge>> edges = dao.getAllEdges();
         
-        System.out.println("Loading graph from DAO...");
-        System.out.println("Found " + nodesWithCoords.size() + " nodes");
-        System.out.println("Found " + edges.size() + " edge entries");
-        
         // Add nodes to memory structures with their actual coordinates
         for (Map.Entry<String, double[]> entry : nodesWithCoords.entrySet()) {
             String nodeName = entry.getKey();
             double[] coords = entry.getValue();
             double x = coords[0];
             double y = coords[1];
-            
-            System.out.println("Loading node: " + nodeName + " at (" + x + ", " + y + ")");
             
             nodeCoordinates.put(nodeName, new Point2D.Double(x, y));
             graphStructure.put(nodeName, new HashSet<>());
@@ -56,19 +50,13 @@ public class StoreService {
         for (Map.Entry<String, List<Edge>> entry : edges.entrySet()) {
             String fromNode = entry.getKey();
             for (Edge edge : entry.getValue()) {
-                System.out.println("Loading edge: " + edge.getFromNode() + " -> " + edge.getToNode() + " (weight: " + edge.getWeight() + ")");
-                
                 // Ensure both nodes exist in graphStructure before adding edge
                 if (graphStructure.containsKey(edge.getFromNode()) && graphStructure.containsKey(edge.getToNode())) {
                     graphStructure.get(edge.getFromNode()).add(edge);
                     algorithm.addEdge(edge.getFromNode(), edge.getToNode(), edge.getWeight());
-                } else {
-                    System.out.println("Warning: Skipping edge " + edge.getFromNode() + " -> " + edge.getToNode() + " because nodes don't exist in memory");
                 }
             }
         }
-        
-        System.out.println("Graph loading completed. Total nodes in memory: " + graphStructure.size());
     }
 
     // Add a node (location) with coordinates

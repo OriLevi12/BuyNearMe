@@ -19,6 +19,57 @@ This project implements the backend logic and service layer of a store locator s
 - Client-server architecture for remote access
 - JSON-based communication
 
+## 🧪 Testing
+
+This project includes comprehensive test coverage with JUnit 5. The tests are organized into logical modules:
+
+### Test Files
+- `GraphOperationsTest.java` - Tests for graph/node/edge operations
+- `StoreManagementTest.java` - Tests for store CRUD operations  
+- `ProductManagementTest.java` - Tests for product management
+- `PathfindingTest.java` - Tests for pathfinding algorithms
+- `StoreServiceTest.java` - Tests for utility methods
+
+### Running Tests
+
+#### Prerequisites
+- JUnit JARs must be in the `lib` directory:
+  - `junit-platform-console-standalone-1.10.0.jar`
+
+#### Compile Tests
+```bash
+javac -cp "lib/*;src/main/java" -d src/main/java src/main/test/com/om/service/*.java
+```
+
+#### Run All Tests
+```bash
+java -cp "lib/*;src/main/java" org.junit.platform.console.ConsoleLauncher --class-path src/main/java --scan-class-path
+```
+
+#### Run Specific Test Files
+```bash
+# Run a single test file
+java -cp "lib/*;src/main/java" org.junit.platform.console.ConsoleLauncher --class-path src/main/java --select-class com.om.service.GraphOperationsTest
+
+# Run multiple specific test files
+java -cp "lib/*;src/main/java" org.junit.platform.console.ConsoleLauncher --class-path src/main/java --select-class com.om.service.GraphOperationsTest --select-class com.om.service.StoreManagementTest --select-class com.om.service.ProductManagementTest --select-class com.om.service.PathfindingTest --select-class com.om.service.StoreServiceTest
+```
+
+#### Using IntelliJ IDEA
+1. Right-click on any test file in the Project Explorer
+2. Select "Run 'TestClassName'"
+3. Or right-click on the `src/main/test` folder and select "Run 'All Tests'"
+
+### Test Coverage
+The test suite covers:
+- ✅ Graph operations (add/remove nodes and edges)
+- ✅ Store management (CRUD operations)
+- ✅ Product management (add/remove/update products)
+- ✅ Pathfinding algorithms (Dijkstra vs A*)
+- ✅ Error handling and validation
+- ✅ Integration tests
+- ✅ Algorithm switching functionality
+
 ## 🧪 Demonstration
 
 Run the `StoreTest.java` class for a complete set of test scenarios, including:
@@ -33,6 +84,7 @@ Run the `StoreTest.java` class for a complete set of test scenarios, including:
 BuyNearMe/
 ├── lib/                           # External dependencies
 │   ├── gson-2.10.1.jar           # Google's JSON library
+│   ├── junit-platform-console-standalone-1.10.0.jar  # JUnit 5 testing framework
 │   └── ShortestPathAlgo.jar      # Pathfinding algorithms library
 ├── src/
 │   └── main/
@@ -62,8 +114,12 @@ BuyNearMe/
 │       │   └── graph.dat          # Graph nodes and edges data storage
 │       └── test/                  # Test cases
 │           └── com/om/service/
-│               └── StoreServiceTest.java    # Service layer tests
-├── pom.xml                        # Maven project configuration
+│               ├── GraphOperationsTest.java    # Graph/node/edge operations tests
+│               ├── StoreManagementTest.java    # Store CRUD operations tests
+│               ├── ProductManagementTest.java  # Product management tests
+│               ├── PathfindingTest.java        # Pathfinding algorithms tests
+│               └── StoreServiceTest.java       # Utility methods tests
+├── BuyNearMe.iml                  # IntelliJ IDEA project configuration
 └── README.md                      # Project documentation
 ```
 
@@ -90,6 +146,9 @@ This project uses the [Pathfinding Library](https://github.com/OriLevi12/pathfin
 2. Build the pathfinding library from [OriLevi12/pathfinding-lib-java](https://github.com/OriLevi12/pathfinding-lib-java)
 3. Copy the generated JAR to the `lib` directory
 4. Download Gson library (version 2.10.1) and add it to the `lib` directory
-5. Open the project in your IDE
-6. Add both JAR files to your project's build path
+5. Open the project in IntelliJ IDEA
+6. Add both JAR files to your project's build path:
+   - Right-click on each JAR in the `lib` directory
+   - Select "Add as Library"
+   - Choose "Project Library" level
 7. Run the tests to verify the setup

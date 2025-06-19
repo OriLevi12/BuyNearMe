@@ -327,7 +327,6 @@ public class DaoFileImpl implements IDao {
         Map<String, Object> graphData = loadGraphFromFile();
         @SuppressWarnings("unchecked")
         Map<String, double[]> nodes = (Map<String, double[]>) graphData.getOrDefault("nodes", new HashMap<>());
-        System.out.println("DAO: Found " + nodes.size() + " nodes in file");
         return new HashMap<>(nodes);
     }
 
@@ -336,8 +335,6 @@ public class DaoFileImpl implements IDao {
         Map<String, Object> graphData = loadGraphFromFile();
         @SuppressWarnings("unchecked")
         Map<String, List<Map<String, Object>>> edges = (Map<String, List<Map<String, Object>>>) graphData.getOrDefault("edges", new HashMap<>());
-        
-        System.out.println("DAO: Found " + edges.size() + " edge entries in file");
         
         // Convert back to Edge objects
         Map<String, List<Edge>> result = new HashMap<>();
@@ -353,7 +350,6 @@ public class DaoFileImpl implements IDao {
             }
             
             result.put(nodeName, edgeList);
-            System.out.println("DAO: Node " + nodeName + " has " + edgeList.size() + " edges");
         }
         
         return result;
