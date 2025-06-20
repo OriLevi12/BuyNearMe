@@ -133,6 +133,9 @@ public class StoreService {
 
     // Product operations
     public void addProductToStore(int storeId, Product product) {
+        if (getStoreById(storeId) == null) {
+            throw new IllegalArgumentException("Store with ID " + storeId + " not found.");
+        }
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
         }
