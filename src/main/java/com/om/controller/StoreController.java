@@ -95,6 +95,10 @@ public class StoreController {
         return storeService.getGraph();
     }
 
+    public Map<String, double[]> getAllNodesWithCoordinates() {
+        return storeService.getAllNodesWithCoordinates();
+    }
+
     public void clearAll() {
         storeService.clear();
     }

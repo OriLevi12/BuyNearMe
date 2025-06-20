@@ -128,7 +128,11 @@ public class HandleRequest implements Runnable {
                 }
                 case "graph/getNodes" -> {
                     List<String> nodes = storeController.getAllNodes();
-                    writer.println(gson.toJson(new Response<>(true, "Nodes retrieved successfully", nodes)));
+                    writer.println(gson.toJson(new Response<>(true, "Nodes retrieved", nodes)));
+                }
+                case "graph/getNodesWithCoordinates" -> {
+                    Map<String, double[]> nodesWithCoords = storeController.getAllNodesWithCoordinates();
+                    writer.println(gson.toJson(new Response<>(true, "Nodes with coordinates retrieved", nodesWithCoords)));
                 }
                 case "graph/removeEdge" -> {
                     String from = (String) body.get("from");
@@ -138,7 +142,7 @@ public class HandleRequest implements Runnable {
                 }
                 case "graph/getEdges" -> {
                     Map<String, List<Edge>> edges = storeController.getAllEdges();
-                    writer.println(gson.toJson(new Response<>(true, "Edges retrieved successfully", edges)));
+                    writer.println(gson.toJson(new Response<>(true, "Edges retrieved", edges)));
                 }
                 case "graph/clearAllData" -> {
                     storeController.clearAll();

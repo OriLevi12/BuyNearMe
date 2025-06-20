@@ -260,6 +260,10 @@ public class StoreService {
         return new ArrayList<>(graphStructure.keySet());
     }
 
+    public Map<String, double[]> getAllNodesWithCoordinates() {
+        return dao.getAllNodesWithCoordinates();
+    }
+
     // Validate that both nodes exist
     private void validateNodes(String node1, String node2) {
         validateNode(node1);

@@ -25,10 +25,11 @@ public class SimpleClient {
             System.out.println("12. Add Node to Graph");
             System.out.println("13. Add Edge to Graph");
             System.out.println("14. Remove Node from Graph");
-            System.out.println("15. Show All Nodes");
-            System.out.println("16. Remove Edge from Graph");
-            System.out.println("17. Show All Edges");
-            System.out.println("18. Clear All Data");
+            System.out.println("15. Remove Edge from Graph");
+            System.out.println("16. Show All Nodes");
+            System.out.println("17. Show All Nodes with Coordinates");
+            System.out.println("18. Show All Edges");
+            System.out.println("19. Clear All Data");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -53,10 +54,11 @@ public class SimpleClient {
                     case 12 -> addNode();
                     case 13 -> addEdge();
                     case 14 -> removeNode();
-                    case 15 -> showAllNodes();
-                    case 16 -> removeEdge();
-                    case 17 -> showAllEdges();
-                    case 18 -> clearAllData();
+                    case 15 -> removeEdge();
+                    case 16 -> showAllNodes();
+                    case 17 -> showAllNodesWithCoordinates();
+                    case 18 -> showAllEdges();
+                    case 19 -> clearAllData();
                     default -> System.out.println("Invalid option!");
                 }
             } catch (Exception e) {
@@ -288,6 +290,10 @@ public class SimpleClient {
 
     private static void showAllEdges() throws IOException {
         NetworkClient.sendRequest("graph/getEdges", new HashMap<>());
+    }
+
+    private static void showAllNodesWithCoordinates() throws IOException {
+        NetworkClient.sendRequest("graph/getNodesWithCoordinates", new HashMap<>());
     }
 
     private static void clearAllData() throws IOException {
