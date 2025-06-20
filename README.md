@@ -28,7 +28,6 @@ This project includes comprehensive test coverage with JUnit 5. The tests are or
 - `StoreManagementTest.java` - Tests for store CRUD operations  
 - `ProductManagementTest.java` - Tests for product management
 - `PathfindingTest.java` - Tests for pathfinding algorithms
-- `StoreServiceTest.java` - Tests for utility methods
 
 ### Running Tests
 
@@ -52,7 +51,7 @@ java -cp "lib/*;src/main/java" org.junit.platform.console.ConsoleLauncher --clas
 java -cp "lib/*;src/main/java" org.junit.platform.console.ConsoleLauncher --class-path src/main/java --select-class com.om.service.GraphOperationsTest
 
 # Run multiple specific test files
-java -cp "lib/*;src/main/java" org.junit.platform.console.ConsoleLauncher --class-path src/main/java --select-class com.om.service.GraphOperationsTest --select-class com.om.service.StoreManagementTest --select-class com.om.service.ProductManagementTest --select-class com.om.service.PathfindingTest --select-class com.om.service.StoreServiceTest
+java -cp "lib/*;src/main/java" org.junit.platform.console.ConsoleLauncher --class-path src/main/java --select-class com.om.service.GraphOperationsTest --select-class com.om.service.StoreManagementTest --select-class com.om.service.ProductManagementTest --select-class com.om.service.PathfindingTest
 ```
 
 #### Using IntelliJ IDEA
@@ -117,8 +116,7 @@ BuyNearMe/
 │               ├── GraphOperationsTest.java    # Graph/node/edge operations tests
 │               ├── StoreManagementTest.java    # Store CRUD operations tests
 │               ├── ProductManagementTest.java  # Product management tests
-│               ├── PathfindingTest.java        # Pathfinding algorithms tests
-│               └── StoreServiceTest.java       # Utility methods tests
+│               └── PathfindingTest.java        # Pathfinding algorithms tests
 ├── BuyNearMe.iml                  # IntelliJ IDEA project configuration
 └── README.md                      # Project documentation
 ```
