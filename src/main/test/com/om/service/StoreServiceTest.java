@@ -62,10 +62,10 @@ public class StoreServiceTest {
             nodes.put("C", new double[]{2.0, 0.0});
             nodes.put("D", new double[]{1.0, -1.0});
             
-            edges.put("A", java.util.Arrays.asList(new Edge("A", "B", 1.5), new Edge("A", "D", 2.0)));
-            edges.put("B", java.util.Arrays.asList(new Edge("B", "A", 1.5), new Edge("B", "C", 1.0)));
-            edges.put("C", java.util.Arrays.asList(new Edge("C", "B", 1.0), new Edge("C", "D", 1.5)));
-            edges.put("D", java.util.Arrays.asList(new Edge("D", "A", 2.0), new Edge("D", "C", 1.5)));
+            edges.put("A", new java.util.ArrayList<>(java.util.Arrays.asList(new Edge("A", "B", 1.5), new Edge("A", "D", 2.0))));
+            edges.put("B", new java.util.ArrayList<>(java.util.Arrays.asList(new Edge("B", "A", 1.5), new Edge("B", "C", 1.0))));
+            edges.put("C", new java.util.ArrayList<>(java.util.Arrays.asList(new Edge("C", "B", 1.0), new Edge("C", "D", 1.5))));
+            edges.put("D", new java.util.ArrayList<>(java.util.Arrays.asList(new Edge("D", "A", 2.0), new Edge("D", "C", 1.5))));
         }
 
         @Override
@@ -186,7 +186,11 @@ public class StoreServiceTest {
 
         @Override
         public java.util.Map<String, java.util.List<Edge>> getAllEdges() {
-            return new java.util.HashMap<>(edges);
+            java.util.Map<String, java.util.List<Edge>> copy = new java.util.HashMap<>();
+            for (java.util.Map.Entry<String, java.util.List<Edge>> entry : edges.entrySet()) {
+                copy.put(entry.getKey(), new java.util.ArrayList<>(entry.getValue()));
+            }
+            return copy;
         }
 
         @Override

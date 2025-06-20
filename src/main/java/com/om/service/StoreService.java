@@ -204,6 +204,9 @@ public class StoreService {
 
     // Delete store
     public void deleteStore(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Store ID must be positive");
+        }
         Store store = dao.getStoreById(id);
         if (store != null) {
             algorithm.removeNode(store.getLocationId());
