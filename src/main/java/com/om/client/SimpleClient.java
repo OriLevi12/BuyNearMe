@@ -11,6 +11,10 @@ public class SimpleClient {
     public static void main(String[] args) {
         while (true) {
             System.out.println("\n=== Store Management System ===");
+            System.out.println("=== Pathfinding Algorithms ===");
+            System.out.println("• Dijkstra: Best for abstract graphs (default)");
+            System.out.println("• A*: Best for geographic coordinates with heuristics");
+            System.out.println("=================================");
             System.out.println("1. Add Store");
             System.out.println("2. Get Store by ID");
             System.out.println("3. Get All Stores");
@@ -30,6 +34,9 @@ public class SimpleClient {
             System.out.println("17. Show All Nodes with Coordinates");
             System.out.println("18. Show All Edges");
             System.out.println("19. Clear All Data");
+            System.out.println("20. Switch to A* Algorithm");
+            System.out.println("21. Switch to Dijkstra Algorithm");
+            System.out.println("22. Show Current Algorithm");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -59,6 +66,9 @@ public class SimpleClient {
                     case 17 -> showAllNodesWithCoordinates();
                     case 18 -> showAllEdges();
                     case 19 -> clearAllData();
+                    case 20 -> switchToAStarAlgorithm();
+                    case 21 -> switchToDijkstraAlgorithm();
+                    case 22 -> showCurrentAlgorithm();
                     default -> System.out.println("Invalid option!");
                 }
             } catch (Exception e) {
@@ -298,5 +308,21 @@ public class SimpleClient {
 
     private static void clearAllData() throws IOException {
         NetworkClient.sendRequest("graph/clearAllData", new HashMap<>());
+    }
+
+    private static void switchToAStarAlgorithm() throws IOException {
+        System.out.println("Switching to A* algorithm...");
+        System.out.println("A* is best for geographic coordinates and uses heuristics for faster pathfinding.");
+        NetworkClient.sendRequest("algorithm/useAStar", new HashMap<>());
+    }
+
+    private static void switchToDijkstraAlgorithm() throws IOException {
+        System.out.println("Switching to Dijkstra algorithm...");
+        System.out.println("Dijkstra is best for abstract graphs and guarantees the shortest path.");
+        NetworkClient.sendRequest("algorithm/useDijkstra", new HashMap<>());
+    }
+
+    private static void showCurrentAlgorithm() throws IOException {
+        NetworkClient.sendRequest("algorithm/getCurrent", new HashMap<>());
     }
 }

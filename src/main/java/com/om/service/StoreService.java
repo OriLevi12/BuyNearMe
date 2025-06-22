@@ -231,6 +231,11 @@ public class StoreService {
         this.algorithm = newAlgo;
     }
 
+    // Get current algorithm name
+    public String getCurrentAlgorithm() {
+        return algorithm.getClass().getSimpleName();
+    }
+
     private void copyGraphToNewAlgorithm(IAlgoShortestPath newAlgo) {
         // First add all nodes with their coordinates
         for (Map.Entry<String, Point2D> entry : nodeCoordinates.entrySet()) {

@@ -102,4 +102,17 @@ public class StoreController {
     public void clearAll() {
         storeService.clear();
     }
+
+    // Algorithm switching operations
+    public void useAStarAlgorithm() {
+        storeService.useAStarAlgorithm();
+    }
+
+    public void useDijkstraAlgorithm() {
+        storeService.useDijkstraAlgorithm();
+    }
+
+    public String getCurrentAlgorithm() {
+        return storeService.getCurrentAlgorithm();
+    }
 }

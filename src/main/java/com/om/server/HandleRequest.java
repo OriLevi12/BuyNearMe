@@ -148,6 +148,19 @@ public class HandleRequest implements Runnable {
                     storeController.clearAll();
                     writer.println(gson.toJson(new Response<>(true, "All data cleared successfully", null)));
                 }
+                // Algorithm switching operations
+                case "algorithm/useAStar" -> {
+                    storeController.useAStarAlgorithm();
+                    writer.println(gson.toJson(new Response<>(true, "Switched to A* algorithm", null)));
+                }
+                case "algorithm/useDijkstra" -> {
+                    storeController.useDijkstraAlgorithm();
+                    writer.println(gson.toJson(new Response<>(true, "Switched to Dijkstra algorithm", null)));
+                }
+                case "algorithm/getCurrent" -> {
+                    String currentAlgorithm = storeController.getCurrentAlgorithm();
+                    writer.println(gson.toJson(new Response<>(true, "Current algorithm retrieved", currentAlgorithm)));
+                }
                 default -> writer.println(gson.toJson(new Response<>(false, "Unknown action: " + action, null)));
             }
 

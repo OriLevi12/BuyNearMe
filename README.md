@@ -19,6 +19,30 @@ This project implements the backend logic and service layer of a store locator s
 - Client-server architecture for remote access
 - JSON-based communication
 
+## 🔄 Algorithm Switching
+
+The system supports two pathfinding algorithms that can be switched at runtime:
+
+### Dijkstra's Algorithm (Default)
+- **Best for**: Abstract graphs without geographic coordinates
+- **Guarantees**: Shortest path
+- **Use case**: When you have a graph with arbitrary weights
+
+### A* Algorithm
+- **Best for**: Geographic coordinates with heuristics
+- **Advantage**: Faster pathfinding using coordinate-based heuristics
+- **Use case**: When you have real-world locations with coordinates
+
+### How to Switch Algorithms
+
+#### Using the Simple Client:
+1. Start the server: `java -cp "lib/*;src/main/java" com.om.Main`
+2. Start the client: `java -cp "lib/*;src/main/java" com.om.client.SimpleClient`
+3. Choose option **20** to switch to A* algorithm
+4. Choose option **21** to switch to Dijkstra algorithm
+5. Choose option **22** to see the current algorithm
+
+
 ## 🧪 Testing
 
 This project includes comprehensive test coverage with JUnit 5. The tests are organized into logical modules:
