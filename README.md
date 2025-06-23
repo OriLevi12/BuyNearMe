@@ -174,3 +174,12 @@ This project uses the [Pathfinding Library](https://github.com/OriLevi12/pathfin
    - Select "Add as Library"
    - Choose "Project Library" level
 7. Run the tests to verify the setup
+
+## 📬 Contact Info
+**Ori Levi**  
+📧 Email: Leviori1218@gmail.com  
+🐙 GitHub: [OriLevi12](https://github.com/OriLevi12)
+
+**Maor Levin**  
+📧 Email: levinmaorlh@gmail.com
+🐙 GitHub: [Maor-Levin](https://github.com/Maor-levin)
