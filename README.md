@@ -2,6 +2,8 @@
 
 This project implements the backend logic and service layer of a store locator system based on a weighted graph. It enables managing stores and products, and finding the nearest store with a desired product using shortest path algorithm
 
+> **🎨 Frontend Available**: This backend has a corresponding JavaFX frontend application. Check out the [BuyNearMe Frontend](https://github.com/OriLevi12/BuyNearMe-frontend) for a complete desktop GUI experience!
+
 ## 💡 Features
 
 - Add nodes and weighted edges to build a graph
